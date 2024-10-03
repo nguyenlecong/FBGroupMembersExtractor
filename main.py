@@ -7,7 +7,7 @@ from src.extractor import Extractor
 
 def main(csv_path, account_id):
     xlsx_path = csv_path.replace('csv', 'xlsx')
-    columns = ['ProfileLink', 'FullName', 'Bio']
+    columns = ['ProfileLink', 'FullName', 'Bio', 'PhoneNumber']
     result = pd.DataFrame(columns=columns)
 
     extractor = Extractor(account_id)
@@ -18,9 +18,13 @@ def main(csv_path, account_id):
     for profile in tqdm(profiles):
         link = profile[2]
         bio = extractor.extract(link)
-        if bio:
+        
+        if not bio: continue
+
+        phone_number = extractor.find_phone_number(bio)
+        if phone_number:
             fullname = profile[1]
-            result = result._append({columns[0]:link, columns[1]:fullname, columns[2]:bio}, ignore_index=True)
+            result = result._append({"ProfileLink":link, "FullName":fullname, "Bio":bio, "PhoneNumber":phone_number}, ignore_index=True)
             result.to_excel(xlsx_path, index=False)
 
     extractor.end()

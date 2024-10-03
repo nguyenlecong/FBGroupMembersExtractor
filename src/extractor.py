@@ -1,6 +1,8 @@
 import os
 os.environ['TF_TFLITE_DISABLE_XNNPACK'] = '1'
 
+import re
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -13,6 +15,7 @@ class Extractor():
         account = config[account_id]
         self.browser = self.login_facebook(account)
 
+        self.pattern = re.compile(r'(?:\+?84|0)(?:\d[\.\s]*){9,10}')
 
     @staticmethod
     def login_facebook(facebook_account):
@@ -50,6 +53,16 @@ class Extractor():
         except:
             bio = None
         return bio
+
+    def find_phone_number(self, text):
+        phone_numbers = []
+        matches = self.pattern.findall(text)
+        for match in matches:
+            cleaned_number = re.sub(r'\D', '', match)
+            if cleaned_number.startswith("84"):
+                cleaned_number = "0" + cleaned_number[2:]
+            phone_numbers.append(cleaned_number)
+        return ', '.join(phone_numbers)
 
     def end(self):
         self.browser.close()
