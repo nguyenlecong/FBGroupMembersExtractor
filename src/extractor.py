@@ -44,7 +44,6 @@ class Extractor():
         return browser
     
     def extract(self, profile_link):
-        sleeping()
         self.browser.get(profile_link)
         sleeping()
         try:

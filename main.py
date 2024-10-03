@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 from tqdm import tqdm
 
@@ -7,6 +9,8 @@ from src.extractor import Extractor
 
 def main(csv_path, account_id):
     xlsx_path = csv_path.replace('csv', 'xlsx')
+    assert not os.path.exists(xlsx_path), f"FileExistsError"
+
     columns = ['ProfileLink', 'FullName', 'Bio', 'PhoneNumber']
     result = pd.DataFrame(columns=columns)
 

@@ -1,0 +1,6 @@
+# Usage: pip install -r requirements.txt
+
+# python 3
+tqdm==4.66.2
+pandas==2.2.2
+selenium==3.141.0
