@@ -8,7 +8,7 @@ def sleeping(min=3, max=5):
     sleep(random.randint(min, max))
 
 def load_config(path):
-    with open(path, 'r') as f:
+    with open(path, 'r', encoding="utf8") as f:
         config = yaml.safe_load(f)
     return config
 

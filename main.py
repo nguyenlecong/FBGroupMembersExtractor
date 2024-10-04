@@ -11,7 +11,7 @@ def main(csv_path, account_id):
     xlsx_path = csv_path.replace('csv', 'xlsx')
     assert not os.path.exists(xlsx_path), f"FileExistsError"
 
-    columns = ['ProfileLink', 'FullName', 'Bio', 'PhoneNumber']
+    columns = ['ProfileLink', 'FullName', 'Intro', 'Bio', 'Area', 'PhoneNumber']
     result = pd.DataFrame(columns=columns)
 
     extractor = Extractor(account_id)
@@ -21,14 +21,20 @@ def main(csv_path, account_id):
 
     for profile in tqdm(profiles):
         link = profile[2]
-        bio = extractor.extract(link)
-        
+        bio, intro, area = extractor.extract(link)
         if not bio: continue
-
+        
         phone_number = extractor.find_phone_number(bio)
         if phone_number:
             fullname = profile[1]
-            result = result._append({"ProfileLink":link, "FullName":fullname, "Bio":bio, "PhoneNumber":phone_number}, ignore_index=True)
+            result = result._append({
+                "ProfileLink": link,
+                "FullName": fullname,
+                "Intro": intro,
+                "Bio": bio,
+                "Area": area,
+                "PhoneNumber": phone_number
+                }, ignore_index=True)
             result.to_excel(xlsx_path, index=False)
 
     extractor.end()

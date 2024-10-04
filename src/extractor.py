@@ -11,11 +11,12 @@ from src.utils import *
 
 class Extractor():
     def __init__(self, account_id):
-        config = load_config('config/account_config.yaml')
-        account = config[account_id]
-        self.browser = self.login_facebook(account)
+        account_config = load_config('config/account_config.yaml')
+        account_info = account_config[account_id]
+        self.browser = self.login_facebook(account_info)
 
         self.pattern = re.compile(r'(?:\+?84|0)(?:\d[\.\s]*){9,10}')
+        self.area_config = load_config('config/area_config.yaml')
 
     @staticmethod
     def login_facebook(facebook_account):
@@ -46,12 +47,23 @@ class Extractor():
     def extract(self, profile_link):
         self.browser.get(profile_link)
         sleeping()
+
+        bio, intro, area = None, None, None
         try:
-            intro = self.browser.find_element_by_css_selector('div.xieb3on > div:nth-child(1) > div > div')
-            bio = intro.text
+            try:
+                bio = self.browser.find_element_by_css_selector('div.xieb3on > div:nth-child(1) > div > div')
+                bio = bio.text
+                try:
+                    intro = self.browser.find_element_by_css_selector('div.xieb3on > div > div > ul')
+                    intro = intro.text
+                    area = self.filter_area(bio, intro)
+                except:
+                    pass
+            except:
+                pass
         except:
-            bio = None
-        return bio
+            pass
+        return bio, intro, area
 
     def find_phone_number(self, text):
         phone_numbers = []
@@ -62,6 +74,14 @@ class Extractor():
                 cleaned_number = "0" + cleaned_number[2:]
             phone_numbers.append(cleaned_number)
         return ', '.join(phone_numbers)
+
+    def filter_area(self, bio, intro):
+        area = ''
+        if bio:
+            area = ''
+        if intro:
+            area = ''
+        return area        
 
     def end(self):
         self.browser.close()
