@@ -39,7 +39,7 @@ class Extractor():
         sleeping()
 
         txtPwd.send_keys(Keys.ENTER)
-        sleeping()
+        sleeping(20,20)  # FB Authentication
 
         return browser
     
