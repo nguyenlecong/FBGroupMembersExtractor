@@ -33,7 +33,10 @@ def main(csv_path, account_id):
                 "Area": area,
                 "PhoneNumber": phone_number
                 }, ignore_index=True)
-            result.to_excel(xlsx_path, index=False)
+            try:
+                result.to_excel(xlsx_path, index=False)
+            except:
+                pass
 
     extractor.end()
 
