@@ -19,7 +19,7 @@ def main(csv_path, account_id):
     data = read_csv(csv_path)
     profiles = data[1:]
 
-    for profile in tqdm(profiles[48:]):
+    for profile in tqdm(profiles):
         link = profile[2]
         bio, intro, area, phone_number = extractor.extract(link)
         
