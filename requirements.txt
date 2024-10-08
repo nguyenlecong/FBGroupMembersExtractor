@@ -1,6 +1,9 @@
 # Usage: pip install -r requirements.txt
 
-# python 3
+# python 3.12
+PyYAML==6.0.2
 tqdm==4.66.2
 pandas==2.2.2
+openpyxl==3.1.5
 selenium==3.141.0
+urllib3==1.26.16

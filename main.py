@@ -19,12 +19,10 @@ def main(csv_path, account_id):
     data = read_csv(csv_path)
     profiles = data[1:]
 
-    for profile in tqdm(profiles):
+    for profile in tqdm(profiles[48:]):
         link = profile[2]
-        bio, intro, area = extractor.extract(link)
-        if not bio: continue
+        bio, intro, area, phone_number = extractor.extract(link)
         
-        phone_number = extractor.find_phone_number(bio)
         if phone_number:
             fullname = profile[1]
             result = result._append({
