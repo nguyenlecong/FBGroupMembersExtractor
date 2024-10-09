@@ -8,6 +8,7 @@ from src.utils import read_csv, create_valid_path
 def main(csv_filename, account_id, continue_index):
     csv_path = 'data/csv/' + csv_filename + '.csv'
     xlsx_path = create_valid_path(csv_filename)
+    print('The result will be saved at:', xlsx_path)
 
     columns = ['ProfileLink', 'FullName', 'Intro', 'Bio', 'Area', 'PhoneNumber']
     result = pd.DataFrame(columns=columns)
