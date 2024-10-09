@@ -1,15 +1,13 @@
-import os
-
 import pandas as pd
 from tqdm import tqdm
 
-from src.utils import read_csv
 from src.extractor import Extractor
+from src.utils import read_csv, create_valid_path
 
 
-def main(csv_path, account_id):
-    xlsx_path = csv_path.replace('csv', 'xlsx')
-    assert not os.path.exists(xlsx_path), f"FileExistsError"
+def main(csv_filename, account_id, continue_index):
+    csv_path = 'data/csv/' + csv_filename + '.csv'
+    xlsx_path = create_valid_path(csv_filename)
 
     columns = ['ProfileLink', 'FullName', 'Intro', 'Bio', 'Area', 'PhoneNumber']
     result = pd.DataFrame(columns=columns)
@@ -17,7 +15,7 @@ def main(csv_path, account_id):
     extractor = Extractor(account_id)
 
     data = read_csv(csv_path)
-    profiles = data[1:]
+    profiles = data[continue_index+1:]  # Include header
 
     for profile in tqdm(profiles):
         link = profile[2]
@@ -34,7 +32,7 @@ def main(csv_path, account_id):
                 "PhoneNumber": phone_number
                 }, ignore_index=True)
             try:
-                result.to_excel(xlsx_path, index=False)
+                result.to_excel(xlsx_path, index=False)  # Handle iligal characters
             except:
                 pass
 
@@ -42,6 +40,7 @@ def main(csv_path, account_id):
 
 
 if __name__ == '__main__':
+    continue_index = 0
     account_id = 1
-    csv_path = 'data/sanads.vn.csv'
-    main(csv_path, account_id)
+    csv_filename = 'sanads.vn'
+    main(csv_filename, account_id, continue_index)
