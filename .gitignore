@@ -1,4 +1,5 @@
 .history
 __pycache__
 asset/chromedriver.exe
+config/extract_config.yaml
 tmp
