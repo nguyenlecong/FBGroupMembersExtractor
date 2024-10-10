@@ -5,7 +5,7 @@ import random
 from time import sleep
 
 
-def sleeping(min=3, max=4):
+def sleeping(min=2, max=3):
     sleep(random.randint(min, max))
 
 def load_config(path):
