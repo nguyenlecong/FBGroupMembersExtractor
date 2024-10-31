@@ -35,8 +35,7 @@ def main(csv_filename, account_id, continue_index):
             try:
                 result.to_excel(xlsx_path, index=False)  # Handle iligal characters
             except:
-                pass
-
+                result = result[:-1]
     extractor.end()
 
 
