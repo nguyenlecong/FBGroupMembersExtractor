@@ -13,7 +13,7 @@ class Spam():
         account_info = account_config[account_id]
         self.browser = self.login_facebook(account_info)
         
-        self.cmt_content = open("config/cmt_content.txt", "r").read()
+        self.cmt_content = open("config/cmt_content.txt", "r", encoding='utf-8').read()
 
     @staticmethod
     def login_facebook(facebook_account):
@@ -50,12 +50,12 @@ class Spam():
             # cmt_btn.click()
             # sleeping()
 
-            cmt_textbox = self.browser.find_element_by_css_selector('role="textbox"')
+            cmt_textbox = self.browser.find_element_by_xpath('//*[@role="textbox"]')
             cmt_textbox.send_keys(self.cmt_content)
             sleeping()
 
             cmt_textbox.send_keys(Keys.ENTER)
-            sleeping()
+            sleeping(5, 5)
         except:
             pass
         
