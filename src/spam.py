@@ -12,6 +12,8 @@ class Spam():
         account_config = load_config('config/account_config.yaml')
         account_info = account_config[account_id]
         self.browser = self.login_facebook(account_info)
+        
+        self.cmt_content = open("config/cmt_content.txt", "r").read()
 
     @staticmethod
     def login_facebook(facebook_account):
@@ -43,7 +45,19 @@ class Spam():
         self.browser.get(profile_link)
         sleeping()
         
-        # Spam here
+        try:
+            # cmt_btn = self.browser.find_element_by_css_selector('[role="comment_button"]')
+            # cmt_btn.click()
+            # sleeping()
 
+            cmt_textbox = self.browser.find_element_by_css_selector('role="textbox"')
+            cmt_textbox.send_keys(self.cmt_content)
+            sleeping()
+
+            cmt_textbox.send_keys(Keys.ENTER)
+            sleeping()
+        except:
+            pass
+        
     def end(self):
         self.browser.close()
