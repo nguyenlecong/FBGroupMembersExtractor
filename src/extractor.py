@@ -85,7 +85,7 @@ class Extractor():
 
         last_post = self.get_last_post()
         if last_post:
-            extra_phone_number = self.find_phone_number(extra_phone_number)
+            extra_phone_number = self.find_phone_number(last_post)
 
         if phone_number or extra_phone_number:
             intro = self.get_intro()
