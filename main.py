@@ -10,7 +10,7 @@ def main(csv_filename, account_id, continue_index):
     xlsx_path = create_valid_path(csv_filename)
     print('The result will be saved at:', xlsx_path)
 
-    columns = ['ProfileLink', 'FullName', 'Intro', 'Bio', 'Area', 'PhoneNumber']
+    columns = ['ProfileLink', 'FullName', 'Intro', 'Bio', 'Area', 'PhoneNumber', 'ExtraPhoneNumber']
     result = pd.DataFrame(columns=columns)
 
     extractor = Extractor(account_id)
@@ -20,9 +20,9 @@ def main(csv_filename, account_id, continue_index):
 
     for profile in tqdm(profiles):
         link = profile[2]
-        bio, intro, area, phone_number = extractor.extract(link)
+        bio, intro, area, phone_number, extra_phone_number = extractor.extract(link)
         
-        if phone_number:
+        if phone_number or extra_phone_number:
             fullname = profile[1]
             result = result._append({
                 "ProfileLink": link,
@@ -30,7 +30,8 @@ def main(csv_filename, account_id, continue_index):
                 "Intro": intro,
                 "Bio": bio,
                 "Area": area,
-                "PhoneNumber": phone_number
+                "PhoneNumber": phone_number,
+                "ExtraPhoneNumber": extra_phone_number
                 }, ignore_index=True)
             try:
                 result.to_excel(xlsx_path, index=False)  # Handle iligal characters

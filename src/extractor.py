@@ -60,19 +60,37 @@ class Extractor():
             intro = ''
         return intro
     
+    def get_last_post(self):
+        try:
+            last_post = self.browser.find_element_by_xpath('//div[contains(@data-ad-preview, "message")]')
+            try:
+                xem_them_button = last_post.find_element_by_xpath('.//div[@role="button" and contains(text(), "Xem thêm")]')
+                xem_them_button.click()
+            except:
+                pass
+            last_post = last_post.text
+        except:
+            last_post = ''
+        return last_post
+    
     def extract(self, profile_link):
         self.browser.get(profile_link)
         sleeping()
 
-        bio, intro, area, phone_number = '', '', '', ''
+        bio, intro, area, phone_number, extra_phone_number = '', '', '', '', ''
 
         bio = self.get_bio()
         if bio:
             phone_number = self.find_phone_number(bio)
-            if phone_number:
-                intro = self.get_intro()
-                area = self.filter_area(intro)
-        return bio, intro, area, phone_number
+
+        last_post = self.get_last_post()
+        if last_post:
+            extra_phone_number = self.find_phone_number(extra_phone_number)
+
+        if phone_number or extra_phone_number:
+            intro = self.get_intro()
+            area = self.filter_area(intro)
+        return bio, intro, area, phone_number, extra_phone_number
 
     def find_phone_number(self, text):
         phone_numbers = []
